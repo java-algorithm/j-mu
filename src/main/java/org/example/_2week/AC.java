@@ -11,6 +11,8 @@ public class AC {
 
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    private static boolean FORWARD = true;
+    private static boolean REVERSE = false;
 
     public static void main(String[] args) throws IOException {
         final int testCount = Integer.parseInt(br.readLine());
@@ -27,7 +29,7 @@ public class AC {
     private static void test() throws IOException {
         final String operations = br.readLine();
 
-        int numbersLength = Integer.parseInt(br.readLine());
+        br.readLine(); //length필요없어서 버림.
 
         final String numbers = br.readLine();
         final String trimmedNumbers = numbers.substring(1, numbers.length() - 1);
@@ -40,56 +42,55 @@ public class AC {
             return;
         }
 
-
         Deque<Integer> parsedNumbers = Arrays.stream(trimmedNumbers.split(","))
-                .map(Integer::parseInt)
-                .collect(Collectors.toCollection(ArrayDeque::new));
+            .map(Integer::parseInt)
+            .collect(Collectors.toCollection(ArrayDeque::new));
 
-        int startIndex = 0;
+        boolean direction = FORWARD;
         final int operationsLength = operations.length();
         for (int i = 0; i < operationsLength; i++) {
             char operation = operations.charAt(i);
             switch (operation) {
                 case 'R':
-                    parsedNumbers = reverseArray(parsedNumbers, startIndex, numbersLength);
-                    startIndex = 0;
-                    numbersLength = parsedNumbers.length;
+                    direction = !direction;
                     break;
                 case 'D':
-                    if (startIndex == numbersLength) {
+                    if (parsedNumbers.isEmpty()) {
                         System.out.println("error");
                         return;
                     }
-                    startIndex++;
-                    break;
+
+                    if (direction == FORWARD) {
+                        parsedNumbers.pollFirst();
+                    } else if (direction == REVERSE) {
+                        parsedNumbers.pollLast();
+                    }
             }
         }
 
-        printArray(parsedNumbers, startIndex, numbersLength);
+        printArray(parsedNumbers, direction);
     }
 
-    private static void printArray(final int[] parsedNumbers, final int startIndex, final int numbersLength) throws IOException {
+    private static void printArray(Deque<Integer> parsedNumbers, boolean direction) {
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (int i = startIndex; i < numbersLength; i++) {
-            sb.append(parsedNumbers[i]).append(",");
-        }
-        sb.delete(sb.length() - 1, sb.length());
-        sb.append("]\n");
+        sb.append('[');
 
+        Iterator<Integer> iterator;
+        if (direction == FORWARD) {
+            iterator = parsedNumbers.iterator();
+        } else {
+            iterator = parsedNumbers.descendingIterator();
+        }
+
+        while (iterator.hasNext()) {
+            sb.append(iterator.next()).append(',');
+        }
+
+        if (sb.length() != 1) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        sb.append(']');
         System.out.println(sb);
     }
-
-    private static int[] reverseArray(Deque<Integer> parsedNumbers, int startIndex, int numbersLength) {
-        final int newLength = numbersLength - startIndex;
-        final int[] newNumbers = new int[newLength];
-
-        int newNumbersIndex = 0;
-        for (int i = startIndex; i < newLength; i++) {
-            newNumbers[newLength - (newNumbersIndex++) - 1] = parsedNumbers[i];
-        }
-
-        return newNumbers;
-    }
-
 }
