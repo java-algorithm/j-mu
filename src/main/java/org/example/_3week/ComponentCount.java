@@ -40,6 +40,7 @@ public class ComponentCount {
             graph.get(vertex2).add(vertex1);
         }
 
+        // DFS
         Stack<Integer> stack = new Stack<>();
 
         int count = 0;
