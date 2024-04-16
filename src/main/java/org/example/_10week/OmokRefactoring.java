@@ -1,12 +1,11 @@
 package org.example._10week;
 
-import javax.swing.text.Position;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class Omok {
+public class OmokRefactoring {
 
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static int[][] board = new int[19][19];
@@ -15,19 +14,16 @@ public class Omok {
     private static int BLACK = 1;
     private static int WHITE = 2;
 
-    private static int INITIAL_CAPACITY = 20;
-    private static int INITIAL_MAP_CAPACITY = 30;
-
     public static void main(String[] args) throws IOException {
-        Map<Integer, List<Integer>> blackRows = new HashMap<>(INITIAL_MAP_CAPACITY);
-        Map<Integer, List<Integer>> blackCols = new HashMap<>(INITIAL_MAP_CAPACITY);
-        Map<Integer, List<Integer>> blackSlash = new HashMap<>(INITIAL_MAP_CAPACITY);
-        Map<Integer, List<Integer>> blackBackSlash = new HashMap<>(INITIAL_MAP_CAPACITY);
+        Map<Integer, List<Integer>> blackRows = new HashMap<>();
+        Map<Integer, List<Integer>> blackCols = new HashMap<>();
+        Map<Integer, List<Integer>> blackSlash = new HashMap<>();
+        Map<Integer, List<Integer>> blackBackSlash = new HashMap<>();
 
-        Map<Integer, List<Integer>> whiteRows = new HashMap<>(INITIAL_MAP_CAPACITY);
-        Map<Integer, List<Integer>> whiteCols = new HashMap<>(INITIAL_MAP_CAPACITY);
-        Map<Integer, List<Integer>> whiteSlash = new HashMap<>(INITIAL_MAP_CAPACITY);
-        Map<Integer, List<Integer>> whiteBackSlash = new HashMap<>(INITIAL_MAP_CAPACITY);
+        Map<Integer, List<Integer>> whiteRows = new HashMap<>();
+        Map<Integer, List<Integer>> whiteCols = new HashMap<>();
+        Map<Integer, List<Integer>> whiteSlash = new HashMap<>();
+        Map<Integer, List<Integer>> whiteBackSlash = new HashMap<>();
 
         for (int i = 0; i < boardSize; i++) {
             final int[] row = Arrays.stream(br.readLine().split(" "))
@@ -38,15 +34,15 @@ public class Omok {
                 board[i][j] = row[j];
 
                 if (board[i][j] == BLACK) {
-                    initializeRows(blackRows, i, j);
-                    initializeCols(blackCols, i, j);
-                    initializeSlash(blackSlash, i, j);
-                    initializeBackSlash(blackBackSlash, i, j);
+                    initialize(blackRows, i + 1, j + 1);
+                    initialize(blackCols, j + 1, i + 1);
+                    initialize(blackSlash, i + j + 2, i + 1);
+                    initialize(blackBackSlash, i - j, i + 1);
                 } else if (board[i][j] == WHITE) {
-                    initializeRows(whiteRows, i, j);
-                    initializeCols(whiteCols, i, j);
-                    initializeSlash(whiteSlash, i, j);
-                    initializeBackSlash(whiteBackSlash, i, j);
+                    initialize(whiteRows, i + 1, j + 1);
+                    initialize(whiteCols, j + 1, i + 1);
+                    initialize(whiteSlash, i + j + 2, i + 1);
+                    initialize(whiteBackSlash, i - j, i + 1);
                 }
             }
         }
@@ -68,28 +64,10 @@ public class Omok {
         System.out.println(0);
     }
 
-    private static void initializeRows(final Map<Integer, List<Integer>> rows, int i, int j) {
-        final List<Integer> row = rows.getOrDefault(i + 1, new ArrayList<>(INITIAL_CAPACITY));
-        row.add(j + 1);
-        rows.put(i + 1, row);
-    }
-
-    private static void initializeCols(final Map<Integer, List<Integer>> cols, final int i, final int j) {
-        final List<Integer> col = cols.getOrDefault(j + 1, new ArrayList<>(INITIAL_CAPACITY));
-        col.add(i + 1);
-        cols.put(j + 1, col);
-    }
-
-    private static void initializeSlash(final Map<Integer, List<Integer>> slashes, final int i, final int j) {
-        final List<Integer> slash = slashes.getOrDefault(i + j + 2, new ArrayList<>(INITIAL_CAPACITY));
-        slash.add(i + 1);
-        slashes.put(i + j + 2, slash);
-    }
-
-    private static void initializeBackSlash(final Map<Integer, List<Integer>> backSlashes, final int i, final int j) {
-        final List<Integer> backSlash = backSlashes.getOrDefault(i - j, new ArrayList<>(INITIAL_CAPACITY));
-        backSlash.add(i + 1);
-        backSlashes.put(i - j, backSlash);
+    private static void initialize(final Map<Integer, List<Integer>> conditions, int key, int value) {
+        final List<Integer> condition = conditions.getOrDefault(key, new ArrayList<>());
+        condition.add(value);
+        conditions.put(key, condition);
     }
 
     private static boolean checkRow(final Map<Integer, List<Integer>> rows, int color) {
@@ -106,7 +84,7 @@ public class Omok {
             Integer cur = -1;
             int continuousCount = 0;
 
-            for (int j = 0; j < rowSize;) {
+            for (int j = 0; j < rowSize; ) {
                 cur = row.get(j);
                 if (prev + 1 == cur || continuousCount == 0) {
                     prev = cur;
@@ -145,7 +123,7 @@ public class Omok {
             Integer prev = 0;
             Integer cur = -1;
 
-            for (int j = 0; j < colSize;) {
+            for (int j = 0; j < colSize; ) {
                 cur = col.get(j);
                 if (prev + 1 == cur || continuousCount == 0) {
                     prev = cur;
@@ -184,7 +162,7 @@ public class Omok {
             Integer cur = -1;
             int continuousCount = 0;
 
-            for (int i = 0; i < slashSize;) {
+            for (int i = 0; i < slashSize; ) {
                 cur = slash.get(i);
                 if (prev + 1 == cur || continuousCount == 0) {
                     prev = cur;
@@ -222,7 +200,7 @@ public class Omok {
             int continuousCount = 0;
             Integer cur = -1;
 
-            for (int i = 0; i < backSlashSize;) {
+            for (int i = 0; i < backSlashSize; ) {
                 cur = slash.get(i);
 
                 if (prev + 1 == cur || continuousCount == 0) {
