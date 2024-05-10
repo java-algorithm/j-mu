@@ -48,6 +48,8 @@ public class JewelBox2 {
             if (needs > studentCount) {
                 left = mid + 1;
             } else if (needs <= studentCount) {
+                // 보석이 부족함.
+
                 right = mid;
             }
         }

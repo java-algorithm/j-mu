@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NumberArrayBetweenPrimeNumber {
@@ -42,6 +43,7 @@ public class NumberArrayBetweenPrimeNumber {
                     System.out.println(0);
                     break;
                 }
+
 
                 if (primes.get(mid) < K && K < primes.get(mid + 1)) {
                     System.out.println(primes.get(mid + 1) - primes.get(mid));

@@ -1,5 +1,6 @@
 package org.example._13week;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class SpiderGame {
@@ -15,7 +16,6 @@ public class SpiderGame {
             System.out.println(-1);
             return;
         }
-
         long right = Integer.MAX_VALUE;
         long left = 1;
 

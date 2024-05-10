@@ -28,7 +28,7 @@ public class PrefixCount {
         Collections.sort(stringSet);
 
         for (int i = 0; i < M; i++) {
-            final String testCase = br.readLine();
+            final String testCase = br.readLine(); //aa
 
             int left = 0;
             int right = stringSet.size() - 1;

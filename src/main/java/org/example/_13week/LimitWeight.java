@@ -41,13 +41,15 @@ public class LimitWeight {
         int left = 1;
         int right = 1_000_000_000;
         int mid = 0;
-        while (left < right) {
-            mid = (int) Math.ceil((double) (left + right) / 2);
+        int answer = Integer.MIN_VALUE;
+        while (left <= right) {
+            mid = (left + right) / 2;
 
             final boolean canPassBridge = bfs(mid);
 
             if (canPassBridge) {
-                left = mid;
+                answer = mid;
+                left = mid + 1;
             } else {
                 right = mid - 1;
             }
@@ -56,7 +58,7 @@ public class LimitWeight {
             visited = new boolean[islandsCount + 1];
         }
 
-        System.out.println(left);
+        System.out.println(answer);
     }
 
     private static boolean bfs(final int mid) {
@@ -75,6 +77,7 @@ public class LimitWeight {
                     continue;
                 }
 
+                // 해당 중량으로 넘어갈수 있는 다리니?
                 if (adjacent.weight < mid) {
                     continue;
                 }
