@@ -1,8 +1,6 @@
 package org.example._18week;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -10,13 +8,18 @@ import java.util.StringTokenizer;
 public class FriendsNetwork {
 
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
     private static Map<String,String> parents;
+    private static Map<String,Integer> counts;
+
     public static void main(String[] args) throws IOException {
         final int testCaseCount = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < testCaseCount; i++) {
             final int relationsCount = Integer.parseInt(br.readLine());
             parents = new HashMap<>();
+            counts = new HashMap<>();
 
             for (int j = 0; j < relationsCount; j++) {
                 final StringTokenizer st = new StringTokenizer(br.readLine());
@@ -25,29 +28,33 @@ public class FriendsNetwork {
 
                 union(friend1, friend2);
 
-                int count = 0;
-                final String target = findParent(friend1);
-                for (String friend : parents.keySet()) {
-                    final String parent = parents.get(friend);
-                    if (target.equals(parent)) {
-                        count++;
-                    }
-                }
-
-                System.out.println(count);
+                final String parent = findParent(friend1);
+                Integer count = counts.get(parent);
+                bw.write(count);
             }
         }
+
+        bw.flush();
     }
 
     private static void union(final String friend1, final String friend2) {
         final String parent1 = findParent(friend1);
         final String parent2 = findParent(friend2);
+        final Integer count1 = counts.getOrDefault(parent1, 1);
+        final Integer count2 = counts.getOrDefault(parent2, 1);
 
-        if (parent1.compareTo(parent2) < 0) {
+        if (!parent1.equals(parent2)) {
             parents.put(parent2, parent1);
-        }else{
-            parents.put(parent1, parent2);
+            counts.put(parent1, count1 + count2);
         }
+
+//        if (parent1.compareTo(parent2) < 0) {
+//            parents.put(parent2, parent1);
+//            counts.put(parent1, count1 + count2);
+//        }else{
+//            parents.put(parent1, parent2);
+//            counts.put(parent2, count1 + count2);
+//        }
     }
 
     private static String findParent(String friend) {

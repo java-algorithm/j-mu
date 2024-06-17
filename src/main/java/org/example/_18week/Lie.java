@@ -9,6 +9,7 @@ public class Lie {
 
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static final Set<Integer> truthPeople = new HashSet();
+    private static final Set<Integer> truthParents = new HashSet();
     private static int[] parents;
     private static List<List<Integer>> parties = new ArrayList<>();
 
@@ -45,7 +46,7 @@ public class Lie {
 
         for (final Integer truthPerson : truthPeople) {
             final int parent = findParent(truthPerson);
-            truthPeople.add(parent);
+            truthParents.add(parent);
         }
 
         int answer = 0;
@@ -55,7 +56,7 @@ public class Lie {
 
             for (final Integer participant : participants) {
                 final int parent = findParent(participant);
-                if (truthPeople.contains(parent)) {
+                if (truthParents.contains(parent)) {
                     hasTruthPerson = true;
                     break;
                 }
