@@ -1,9 +1,6 @@
 package org.example._20week;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class PathSum3 {
 
@@ -140,6 +137,11 @@ public class PathSum3 {
             this.val = val;
             this.left = left;
             this.right = right;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(val, left, right);
         }
 
         public void setLeft(final TreeNode left) {
