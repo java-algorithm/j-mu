@@ -126,7 +126,7 @@ public class PathSum3 {
         public TreeNode left;
         public TreeNode right;
 
-        TreeNode() {
+        public TreeNode() {
         }
 
         TreeNode(int val) {
