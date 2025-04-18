@@ -1,0 +1,152 @@
+//package org.example._54week;
+//
+//import java.io.BufferedReader;
+//import java.io.IOException;
+//import java.io.InputStreamReader;
+//import java.util.LinkedList;
+//import java.util.PriorityQueue;
+//import java.util.Queue;
+//import java.util.StringTokenizer;
+//
+//public class CastleDefense {
+//
+//    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//
+//    private static int answer = 0;
+//    private static int[][] map;
+//    private static int rowSize;
+//    private static int colSize;
+//    private static int distance;
+//
+//    public static void main(String[] args) throws IOException {
+//        StringTokenizer st = new StringTokenizer(br.readLine());
+//
+//        rowSize = Integer.parseInt(st.nextToken());
+//        colSize = Integer.parseInt(st.nextToken());
+//        distance = Integer.parseInt(st.nextToken());
+//
+//        map = new int[rowSize + 1][colSize];
+//        for (int i = 0; i < rowSize; i++) {
+//            StringTokenizer input = new StringTokenizer(br.readLine());
+//
+//            for (int j = 0; j < colSize; j++) {
+//                map[i][j] = Integer.parseInt(input.nextToken());
+//            }
+//        }
+//
+//        colSize = 5;
+//
+//        // 조합 구하기
+//        boolean[] archers = new boolean[colSize];
+//        backtracking(0, 0, archers);
+//    }
+//
+//    private static void backtracking(int depth, int selectedCnt, boolean[] archers) {
+//        if (selectedCnt >= 4) {
+//            return;
+//        }
+//
+//        if (selectedCnt == 3) {
+//            printArchers(archers);
+//            int cnt = calculate(archers);
+//            answer = Math.max(answer, cnt);
+//            return;
+//        }
+//
+//        for (int i = depth; i < colSize; i++) {
+//            archers[i] = true;
+//            backtracking(i + 1, selectedCnt + 1, archers);
+//            archers[i] = false;
+//        }
+//    }
+//
+//    private static int calculate(boolean[] archers) {
+//        int[] archerCol = new int[3];
+//
+//        for (int i = 0, idx = 0; i < archers.length; i++) {
+//            if (archers[i]) {
+//                archerCol[idx++] = i;
+//            }
+//        }
+//
+//        int[][] newMap = copyArray(map);
+//        boolean[][] dead = new boolean[rowSize][colSize];
+////
+////        PriorityQueue<int[]>[] queues = new PriorityQueue<>[3];
+////        for (int i = 0; i < 3; i++) {
+////            int col = archerCol[i];
+////            queues[i] = new PriorityQueue<>((e1, e2) -> {
+////                int distance1 = Math.abs(rowSize - e1[0]) + Math.abs(col - e1[0]);
+////                int distance2 = Math.abs(rowSize - e2[0]) + Math.abs(col - e2[0]);
+////
+////                return Integer.compare(distance1, distance2);
+////            });
+////        }
+////
+////        for (int row = 0; row < rowSize; row++) {
+////            for (int col = 0; col < colSize; col++) {
+////                if (map[row][col] == 1) {
+////                    queues[0].add(new int[]{row, col, 0});
+////                    queues[1].add(new int[]{row, col, 1});
+////                    queues[2].add(new int[]{row, col, 2});
+////                }
+////            }
+////        }
+////
+////        for (int i = rowSize + 1; i >= 0; i--) {
+////            int[] cell1 = null;
+////            while (!queues[0].isEmpty()) {
+////                cell1 = queues[0].peek();
+////                if (cell1[0] <= i) {
+////                    break;
+////                } else {
+////                    cell1 = null;
+////                }
+////            }
+////
+////            int[] cell2 = null;
+////            while (!queues[1].isEmpty()) {
+////                cell1 = queues[0].peek();
+////                if (cell1[0] <= i) {
+////                    break;
+////                } else {
+////                    cell1 = null;
+////                }
+////            }
+////
+////            int[] cell3 = null;
+////            while (!queues[2].isEmpty()) {
+////                cell1 = queues[0].peek();
+////                if (cell1[0] <= i) {
+////                    break;
+////                } else {
+////                    cell1 = null;
+////                }
+////            }
+////
+////
+////
+//        }
+//
+//        return 0;
+//    }
+//
+//    private static void printArchers(boolean[] archers) {
+//        for (int i = 0; i < archers.length; i++) {
+//            System.out.print(archers[i] ? "O" : "X");
+//        }
+//        System.out.println();
+//    }
+//
+//    private static int[][] copyArray(int[][] map) {
+//        int[][] newMap = new int[rowSize][colSize];
+//
+//        for (int row = 0; row < rowSize; row++) {
+//            for (int col = 0; col < colSize; col++) {
+//                newMap[row][col] = map[row][col];
+//            }
+//        }
+//
+//        return newMap;
+//    }
+//}
